@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p>
+        {{ post.author }}, 
+        {{ post.date.strftime('%d.%m.%Y') }}
+    </p>
+    <div class="w-75 p-3 mx-auto">
+        <img class="img-fluid" src="{{ url_for('static', filename='images/' + post.image_id) }}">
+    </div>
+    <p class="mt-5">{{ post.text }}</p>
+
+    
+    <div class="card">
+        <div class="card-header">
+            Оставьте комментарий
+        </div>
+        <div class="card-body">
+            <textarea class="form-control mb-3" rows="3"></textarea>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </div>
+      </div>
+    
+    <div class="container mt-3">
+        <h1 class="mb-3">Комментарии</h1>
+        {% for comment in post.comments%}
+        <hr>
+        <div class="d-flex mb-3">
+            <div class="flex-shrink-0">
+                <img src="{{ url_for('static', filename='images/avatar.jpg') }}" class="rounded-circle" height="50">
+            </div>
+            <div class="flex-grow-1 ms-3">
+                <h5>{{ comment.author}}</h5>
+                <p>{{ comment.text}}</p>
+                
+                <!-- Nested media object -->
+                {%if comment.replies %}
+                {%for replie in comment.replies%}
+                <div class="d-flex mt-4">
+                    <div class="flex-shrink-0">
+                        <img src="{{ url_for('static', filename='images/avatar.jpg') }}" class="rounded-circle" height="50">
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h5>{{ replie.author }}</h5>
+                        <p>{{ replie.text}}</p>
+                    </div>
+                </div>
+                {%endfor%}
+                {%endif%}
+            </div>
+        </div>
+        
+        {%endfor%}
+    </div>
+    
+
+    
+{% endblock %}
